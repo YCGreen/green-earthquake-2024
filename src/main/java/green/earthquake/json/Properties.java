@@ -6,7 +6,6 @@ public class Properties {
     String place;
     long time;
 
-
     public double getMag() {
         return mag;
     }
