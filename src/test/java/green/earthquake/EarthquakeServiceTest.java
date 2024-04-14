@@ -22,6 +22,10 @@ class EarthquakeServiceTest {
         assertNotNull(properties.getPlace());
         assertNotEquals(0, properties.getMag());
         assertNotEquals(0, properties.getTime());
+
+        Geometry geo = collection.features[0].geometry;
+        assertNotEquals(0, geo.getLatitude());
+        assertNotEquals(0, geo.getLongitude());
     }
 
     @Test
@@ -39,20 +43,6 @@ class EarthquakeServiceTest {
         assertNotNull(properties.getPlace());
         assertNotEquals(0, properties.getMag());
         assertNotEquals(0, properties.getTime());
-    }
-
-    @Test
-    void geometry() {
-        //given
-        EarthquakeService service = new EarthquakeServiceFactory().getService();
-
-        //when
-        FeatureCollection collection = service.oneHour().blockingGet();
-
-        //then
-        Geometry geo = collection.features[0].geometry;
-        assertNotEquals(0, geo.getLatitude());
-        assertNotEquals(0, geo.getLongitude());
     }
 
 }

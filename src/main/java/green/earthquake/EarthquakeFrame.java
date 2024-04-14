@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class EarthquakeFrame extends JFrame {
 
     private JList<String> jlist = new JList<>();
-    private ArrayList<Point2D> geo = new ArrayList<>();
+    private FeatureCollection fc = new FeatureCollection();
 
     public EarthquakeFrame() {
 
@@ -79,8 +79,8 @@ public class EarthquakeFrame extends JFrame {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 int index = jlist.getSelectedIndex();
-                double lat = geo.get(index).getX();
-                double lon = geo.get(index).getY();
+                double lat = fc.features[index].geometry.getLatitude();
+                double lon = fc.features[index].geometry.getLongitude();
                 try {
                     Desktop.getDesktop().browse(new URI(String.format("http://maps.google.com/?q=%f,%f", lat, lon)));
                 } catch (IOException | URISyntaxException ex) {
@@ -97,11 +97,11 @@ public class EarthquakeFrame extends JFrame {
 
     private void handleResponse(FeatureCollection response) {
 
+        fc = response;
         String[] listData = new String[response.features.length];
         for (int i = 0; i < response.features.length; i++) {
             Feature feature = response.features[i];
             listData[i] = feature.properties.getMag() + " " + feature.properties.getPlace();
-            geo.add(new Point2D.Double(feature.geometry.getLatitude(), feature.geometry.getLongitude()));
         }
         jlist.setListData(listData);
     }
